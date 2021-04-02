@@ -6,6 +6,11 @@ const db = require("./src/models");
 // Init Sequelize
 (async () => {
   await db.sequelize.sync({ force: true });
+
+  // Init Roles
+  db.role.create({ role: "Admin" });
+  db.role.create({ role: "Support" });
+  db.role.create({ role: "Customer" });
 })();
 
 app.use(cors());
