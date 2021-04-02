@@ -17,9 +17,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => {
-  res.json("Success");
-});
+// Router
+const Auth = require("./src/routers/Auth");
+app.use("/auth", Auth);
 
 app.listen(port, (req, res) => {
   console.log(`Server Run on ${port}`);
