@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const db = require("../models");
+const redisFunc = require("../libs/Redis");
 const User = db.user;
 const Role = db.role;
 
@@ -10,6 +11,11 @@ const signIn = async (req, res) => {
   // Check user,pass valid
   if (!username || !password) {
     return res.status(400).json({ message: "Invalid User or Password" });
+  }
+
+  // Check in Cache
+  const cacheUser = await redisFunc.getCache(username);
+  if (cacheUser) {
   }
 
   // Find User in Db

@@ -5,7 +5,7 @@ const getAsync = promisify(client.get).bind(client);
 
 // Get Key
 const getCache = (key) => {
-  return (new Promise() = async (resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     if (!key) {
       reject(new Error("Key not existing"));
     }
@@ -21,7 +21,7 @@ const getCache = (key) => {
 
 // Set Key
 const setCache = (key, value) => {
-  return (new Promise() = (resolve, reject) => {
+  return new Promise((resolve, reject) => {
     try {
       client.set(key, value, () => {
         resolve();
@@ -34,7 +34,7 @@ const setCache = (key, value) => {
 
 // Del Key
 const delCache = (key) => {
-  return (new Promise() = (resolve, reject) => {
+  return new Promise((resolve, reject) => {
     try {
       client.del(key, (err, res) => {
         if (res == 1) {
