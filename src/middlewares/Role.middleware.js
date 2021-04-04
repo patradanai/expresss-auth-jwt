@@ -12,7 +12,7 @@ const isAdmin = async (req, res, next) => {
   next();
 };
 
-const isCustomer = (req, res, next) => {
+const isCustomer = async (req, res, next) => {
   const user = req.user;
 
   const resCache = await redisFunc.getCache(user);
@@ -24,7 +24,7 @@ const isCustomer = (req, res, next) => {
   next();
 };
 
-const isSupport = (req, res, next) => {
+const isSupport = async (req, res, next) => {
   const user = req.user;
 
   const resCache = await redisFunc.getCache(user);

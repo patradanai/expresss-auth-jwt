@@ -7,4 +7,6 @@ router.post("/signin", authController.signIn);
 
 router.post("/signup", authMiddle.IsExistUser, authController.signUp);
 
+router.get("/logout", authMiddle.isAuthorize, authController.Logout);
+
 module.exports = router;

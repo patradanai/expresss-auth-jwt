@@ -45,8 +45,6 @@ const signIn = async (req, res) => {
     roles.push("ROLE_" + resRoles[i].role);
   }
 
-  const _id = uuidv4();
-
   // Store in Redis
   redisFunc.setCacheEx(
     user.id,
@@ -61,7 +59,7 @@ const signIn = async (req, res) => {
     expired
   );
 
-  return res.status(200).json({ token: token, _id: _id });
+  return res.status(200).json({ token: token });
 };
 
 const signUp = async (req, res) => {
@@ -87,7 +85,21 @@ const signUp = async (req, res) => {
   return res.status(200).json({ Message: "Register Successful" });
 };
 
+const Logout = async (req, res) => {
+  const user = req.user;
+
+  // Del in Redis
+  const resDel = await redisFunc.delCache(user);
+
+  if (resDel) {
+    return res.status(200).json({ message: "Logout Success" });
+  } else {
+    return res.status(401).json({ message: "Logout not Success" });
+  }
+};
+
 module.exports = {
   signUp: signUp,
   signIn: signIn,
+  Logout: Logout,
 };

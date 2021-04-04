@@ -52,7 +52,7 @@ const delCache = (key) => {
     try {
       client.del(key, (err, res) => {
         if (res == 1) {
-          resolve();
+          resolve(true);
         } else {
           reject(new Error(err));
         }
