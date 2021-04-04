@@ -12,8 +12,7 @@ const getCache = (key) => {
 
     try {
       const value = await getAsync(key);
-      console.log(1);
-      resolve(value);
+      resolve(JSON.parse(value));
     } catch (err) {
       console.log(2);
       reject(new Error(err));

@@ -5,6 +5,7 @@ const redisFunc = require("../libs/Redis");
 const { v4: uuidv4 } = require("uuid");
 const User = db.user;
 const Role = db.role;
+const expired = 60 * 60;
 
 const signIn = async (req, res) => {
   const { username, password } = req.body;
@@ -36,21 +37,28 @@ const signIn = async (req, res) => {
     }
   );
 
+  // Get Role
+  let roles = [];
+  const resRoles = await user.getRoles();
+
+  for (let i = 0; i < resRoles.length; i++) {
+    roles.push("ROLE_" + resRoles[i].role);
+  }
+
   const _id = uuidv4();
 
   // Store in Redis
   redisFunc.setCacheEx(
-    _id,
-    JSON.stringify(
-      {
-        id: user.id,
-        firstname: user.firstname,
-        lastname: user.lastname,
-        username: storeProfile.username,
-        token: token,
-      },
-      60 * 60
-    )
+    user.id,
+    JSON.stringify({
+      id: user.id,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      username: storeProfile.username,
+      token: token,
+      roles: roles,
+    }),
+    expired
   );
 
   return res.status(200).json({ token: token, _id: _id });

@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const db = require("../models");
 const User = db.user;
 
-const isAuthorize = (req, res) => {
+const isAuthorize = (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization) {

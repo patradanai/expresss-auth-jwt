@@ -6,7 +6,7 @@ const port = process.env.PORT || 3000;
 const db = require("./src/models");
 // Init Sequelize
 (async () => {
-  await db.sequelize.sync({ force: true });
+  await db.sequelize.sync();
 
   // Init Roles
   db.role.create({ role: "Admin" });
@@ -19,8 +19,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Router
-const Auth = require("./src/routers/Auth");
+const Auth = require("./src/routers/Auth.routes");
+const Dashboards = require("./src/routers/Dashboard.routes");
 app.use("/auth", Auth);
+app.use("/dashboard", Dashboards);
 
 app.listen(port, (req, res) => {
   console.log(`Server Run on ${port}`);
