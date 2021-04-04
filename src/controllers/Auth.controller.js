@@ -2,20 +2,17 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const db = require("../models");
 const redisFunc = require("../libs/Redis");
+const { v4: uuidv4 } = require("uuid");
 const User = db.user;
 const Role = db.role;
 
 const signIn = async (req, res) => {
   const { username, password } = req.body;
+  let storeProfile = {};
 
   // Check user,pass valid
   if (!username || !password) {
     return res.status(400).json({ message: "Invalid User or Password" });
-  }
-
-  // Check in Cache
-  const cacheUser = await redisFunc.getCache(username);
-  if (cacheUser) {
   }
 
   // Find User in Db
@@ -39,7 +36,24 @@ const signIn = async (req, res) => {
     }
   );
 
-  return res.status(200).json({ token: token });
+  const _id = uuidv4();
+
+  // Store in Redis
+  redisFunc.setCacheEx(
+    _id,
+    JSON.stringify(
+      {
+        id: user.id,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        username: storeProfile.username,
+        token: token,
+      },
+      60 * 60
+    )
+  );
+
+  return res.status(200).json({ token: token, _id: _id });
 };
 
 const signUp = async (req, res) => {

@@ -12,8 +12,10 @@ const getCache = (key) => {
 
     try {
       const value = await getAsync(key);
+      console.log(1);
       resolve(value);
     } catch (err) {
+      console.log(2);
       reject(new Error(err));
     }
   });
@@ -24,6 +26,19 @@ const setCache = (key, value) => {
   return new Promise((resolve, reject) => {
     try {
       client.set(key, value, () => {
+        resolve();
+      });
+    } catch (err) {
+      reject(new Error(err));
+    }
+  });
+};
+
+// Set Key
+const setCacheEx = (key, value, ex) => {
+  return new Promise((resolve, reject) => {
+    try {
+      client.setex(key, ex, value, () => {
         resolve();
       });
     } catch (err) {
@@ -52,5 +67,6 @@ const delCache = (key) => {
 module.exports = {
   getCache: getCache,
   setCache: setCache,
+  setCacheEx: setCacheEx,
   delCache: delCache,
 };
