@@ -21,7 +21,7 @@ try {
   console.log(err);
 }
 
-Object.keys(db).forEach(function (modelName) {
+Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }
@@ -37,3 +37,6 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 module.exports = db;
+
+// Guide  Sequelize : https://web.archive.org/web/20141205221135/http://sequelizejs.com/articles/express
+// Sequelize-cli : https://levelup.gitconnected.com/creating-sequelize-associations-with-the-sequelize-cli-tool-d83caa902233

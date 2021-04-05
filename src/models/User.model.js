@@ -8,13 +8,11 @@ module.exports = (sequelize, Sequelize) => {
       username: Sequelize.STRING,
       password: Sequelize.STRING,
     },
-    {
-      classMethods: {
-        associate: (models) => {
-          User.belongsToMany(models.Role, { through: "user_roles" });
-        },
-      },
-    }
+    {}
   );
+  User.associate = (models) => {
+    User.belongsToMany(models.Role, { through: "user_roles" });
+  };
+
   return User;
 };
