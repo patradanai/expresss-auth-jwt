@@ -9,9 +9,9 @@ const db = require("./src/models");
   await db.sequelize.sync();
 
   // Init Roles
-  db.role.create({ role: "Admin" });
-  db.role.create({ role: "Support" });
-  db.role.create({ role: "Customer" });
+  db.Role.create({ role: "Admin" });
+  db.Role.create({ role: "Support" });
+  db.Role.create({ role: "Customer" });
 })();
 
 app.use(cors());
